@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageCircle, ShieldCheck, Zap, MapPin, Award, CheckCircle, ArrowRight } from 'lucide-react';
+import { MessageCircle, ShieldCheck, Zap, MapPin, Award, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import Hero3DSupplement from './Hero3DSupplement';
 
 const HERO_FLAVORS = [
@@ -9,6 +9,15 @@ const HERO_FLAVORS = [
   { name: 'Cookies & Cream', colorHex: '#10B981', desc: 'Emerald Crunch Edition' },
   { name: 'Malai Kulfi', colorHex: '#FBBF24', desc: 'Authentic Desi Taste' },
   { name: 'Cafe Mocha', colorHex: '#78350F', desc: 'Arabica Pre-Workout Kick' },
+];
+
+const MARQUEE_ITEMS = [
+  '100% NABL LAB VERIFIED',
+  'ZERO AMINO SPIKING',
+  'AUTHORIZED IMPORTERS',
+  'SHIVASHTA COMPLEX VELANJA RD SURAT',
+  'SAME-DAY SURAT EXPRESS DISPATCH',
+  'FSSAI LIC. 10723026000412',
 ];
 
 export default function HeroSection({
@@ -27,28 +36,29 @@ export default function HeroSection({
   };
 
   return (
-    <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
-      {/* Background radial glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
+    <section className="relative pt-24 pb-0 lg:pt-32 overflow-hidden">
+      {/* Background radial emerald ambient glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] bg-emerald-500/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute top-10 right-10 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-16 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Kinetic Labs Headline & Story */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 flex flex-col justify-center"
           >
             {/* Top Local Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium mb-6 w-fit backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-emerald-500/35 text-emerald-400 text-xs font-mono font-medium mb-6 w-fit backdrop-blur-md shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               SURAT HQ: SHIVASHTA COMPLEX, VELANJA RD
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-6 font-heading">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.06] mb-6 font-heading">
               PURE POWER. <br />
               <span className="text-gradient-volt">ZERO COMPROMISE.</span> <br />
               <span className="text-zinc-400 text-3xl sm:text-4xl lg:text-5xl font-extrabold">
@@ -56,7 +66,7 @@ export default function HeroSection({
               </span>
             </h1>
 
-            <p className="text-zinc-400 text-base sm:text-lg mb-8 leading-relaxed max-w-xl">
+            <p className="text-zinc-400 text-base sm:text-lg mb-8 leading-relaxed max-w-xl font-body">
               Surat’s premier verified sports nutrition destination. Direct authorized brand imports, NABL batch-certified whey isolates, and same-day express delivery across Surat city or 15-minute store pickup.
             </p>
 
@@ -65,7 +75,7 @@ export default function HeroSection({
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                  Select Flavor (Controls 3D Canister):
+                  Select Flavor (Syncs with 3D Canister):
                 </span>
                 <span className="text-xs font-mono text-emerald-400 font-bold">
                   {activeFlavor.name}
@@ -96,7 +106,7 @@ export default function HeroSection({
             </div>
 
             {/* Quick Macro Specs Grid */}
-            <div className="grid grid-cols-4 gap-3 p-4 rounded-2xl glass-panel border border-white/10 mb-8 max-w-xl">
+            <div className="grid grid-cols-4 gap-3 p-4 rounded-2xl glass-panel-elevated mb-8 max-w-xl">
               <div className="text-center border-r border-white/10">
                 <div className="text-2xl font-black font-heading text-white">27g</div>
                 <div className="text-[11px] font-mono text-emerald-400">ISOLATE</div>
@@ -155,7 +165,7 @@ export default function HeroSection({
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: 'easeOut' }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 relative"
           >
             <Hero3DSupplement
@@ -164,6 +174,33 @@ export default function HeroSection({
             />
           </motion.div>
 
+        </div>
+      </div>
+
+      {/* Smooth Infinite Horizontal Marquee Strip */}
+      <div className="w-full border-t border-b border-white/10 bg-[#0E0E12] py-3.5 overflow-hidden relative select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#09090B] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#09090B] to-transparent z-10 pointer-events-none" />
+        
+        <div className="animate-marquee flex items-center gap-8 whitespace-nowrap text-xs font-mono font-bold tracking-widest uppercase">
+          {/* First set */}
+          {MARQUEE_ITEMS.map((item, idx) => (
+            <div key={`m1-${idx}`} className="flex items-center gap-8">
+              <span className="text-zinc-300 hover:text-emerald-400 transition-colors cursor-default">
+                {item}
+              </span>
+              <span className="text-emerald-500/60 text-sm">✦</span>
+            </div>
+          ))}
+          {/* Second duplicate set for infinite seamless wrap */}
+          {MARQUEE_ITEMS.map((item, idx) => (
+            <div key={`m2-${idx}`} className="flex items-center gap-8">
+              <span className="text-zinc-300 hover:text-emerald-400 transition-colors cursor-default">
+                {item}
+              </span>
+              <span className="text-emerald-500/60 text-sm">✦</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

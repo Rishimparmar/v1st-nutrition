@@ -2,9 +2,9 @@ import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Environment, Float, Sparkles, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
-import { RotateCw, Sparkles as SparklesIcon, ShieldCheck, Eye } from 'lucide-react';
+import { RotateCw, ShieldCheck, Eye, Sparkles as SparklesIcon } from 'lucide-react';
 
-// Generates a dynamic, high-resolution procedural label texture
+// Generates an ultra-crisp, high-resolution procedural label texture
 function createSupplementLabelTexture(flavorColor, flavorName) {
   const canvas = document.createElement('canvas');
   canvas.width = 2048;
@@ -12,11 +12,11 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   const ctx = canvas.getContext('2d');
 
   // Background deep dark carbon weave
-  ctx.fillStyle = '#0F0F12';
+  ctx.fillStyle = '#0E0E12';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Subtle grid lines & carbon pattern
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
   ctx.lineWidth = 2;
   for (let x = 0; x < canvas.width; x += 32) {
     ctx.beginPath();
@@ -25,7 +25,7 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
     ctx.stroke();
   }
 
-  // --- FRONT LABEL REGION (Center-Left: x: 100 to 1100) ---
+  // --- FRONT LABEL REGION (Center-Left: x: 120 to 1050) ---
   // Top brand bar
   ctx.fillStyle = flavorColor;
   ctx.fillRect(120, 90, 860, 16);
@@ -40,15 +40,15 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ctx.lineTo(-45, 30);
   ctx.closePath();
   ctx.fill();
-  ctx.fillStyle = '#0F0F12';
-  ctx.font = 'bold 36px sans-serif';
+  ctx.fillStyle = '#0E0E12';
+  ctx.font = 'bold 36px "Syne", sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText('V1', 0, 22);
   ctx.restore();
 
   // Brand Name
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '900 68px "Space Grotesk", sans-serif';
+  ctx.font = '900 68px "Syne", sans-serif';
   ctx.textAlign = 'left';
   ctx.fillText('V1ST NUTRITION', 300, 250);
 
@@ -60,16 +60,16 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
 
   // Main Product Title
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '900 102px "Space Grotesk", sans-serif';
+  ctx.font = '900 104px "Syne", sans-serif';
   ctx.fillText('100% WHEY', 120, 430);
   ctx.fillStyle = flavorColor;
   ctx.fillText('ISOLATE', 120, 530);
 
   // Highlight Badge: Microfiltered Purity
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
   ctx.fillRect(120, 565, 860, 55);
   ctx.fillStyle = '#F4F4F5';
-  ctx.font = '600 24px "Inter", sans-serif';
+  ctx.font = '600 24px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('CROSS-FLOW MICROFILTERED • ZERO ADDED SUGAR • INSTANTIZED', 140, 602);
 
   // Macro Pillars Box Grid
@@ -81,14 +81,14 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ];
   macros.forEach((m, idx) => {
     const bx = 120 + idx * 220;
-    ctx.fillStyle = 'rgba(20, 20, 24, 0.9)';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.fillStyle = 'rgba(20, 20, 26, 0.92)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
     ctx.lineWidth = 3;
     ctx.strokeRect(bx, 650, 200, 150);
     ctx.fillRect(bx, 650, 200, 150);
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '900 48px "Space Grotesk", sans-serif';
+    ctx.font = '900 48px "Syne", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(m.val, bx + 100, 720);
 
@@ -101,7 +101,7 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ctx.fillStyle = flavorColor;
   ctx.fillRect(120, 835, 860, 75);
   ctx.fillStyle = '#09090B';
-  ctx.font = '900 32px "Space Grotesk", sans-serif';
+  ctx.font = '900 32px "Syne", sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText(`FLAVOR: ${flavorName.toUpperCase()}`, 550, 883);
 
@@ -113,14 +113,14 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ctx.strokeStyle = '#F59E0B';
   ctx.lineWidth = 5;
   ctx.stroke();
-  ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+  ctx.fillStyle = 'rgba(245, 158, 11, 0.18)';
   ctx.fill();
 
   ctx.fillStyle = '#F59E0B';
-  ctx.font = '800 16px "Inter", sans-serif';
+  ctx.font = '800 16px "Plus Jakarta Sans", sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText('100% GENUINE', 0, -20);
-  ctx.font = '900 24px "Space Grotesk", sans-serif';
+  ctx.font = '900 24px "Syne", sans-serif';
   ctx.fillText('NABL', 0, 8);
   ctx.font = '700 14px "JetBrains Mono", monospace';
   ctx.fillText('LAB TESTED', 0, 32);
@@ -132,15 +132,15 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
 
   // Nutrition Header
   ctx.fillStyle = '#000000';
-  ctx.font = '900 42px "Space Grotesk", sans-serif';
+  ctx.font = '900 42px "Syne", sans-serif';
   ctx.textAlign = 'left';
   ctx.fillText('NUTRITION FACTS', 1250, 155);
 
-  ctx.font = '600 20px "Inter", sans-serif';
+  ctx.font = '600 20px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('Serving Size: 1 Heaping Scoop (31g) | Servings: 32', 1250, 195);
   ctx.fillRect(1250, 210, 640, 8);
 
-  ctx.font = '900 30px "Space Grotesk", sans-serif';
+  ctx.font = '900 30px "Syne", sans-serif';
   ctx.fillText('Amount Per Serving', 1250, 255);
   ctx.fillText('Calories: 121 kcal', 1250, 295);
   ctx.fillRect(1250, 310, 640, 4);
@@ -160,7 +160,7 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
 
   facts.forEach((item, i) => {
     const yPos = 350 + i * 36;
-    ctx.font = i === 0 ? '800 20px "Inter", sans-serif' : '500 18px "Inter", sans-serif';
+    ctx.font = i === 0 ? '800 20px "Plus Jakarta Sans", sans-serif' : '500 18px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#111827';
     ctx.fillText(item.name, 1250, yPos);
     ctx.textAlign = 'right';
@@ -174,9 +174,9 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ctx.fillStyle = '#111827';
   ctx.font = '700 18px "JetBrains Mono", monospace';
   ctx.fillText('FSSAI LIC NO: 10723026000412', 1250, 750);
-  ctx.font = '500 16px "Inter", sans-serif';
+  ctx.font = '500 16px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('Manufactured for & Distributed by:', 1250, 780);
-  ctx.font = '700 17px "Space Grotesk", sans-serif';
+  ctx.font = '700 17px "Syne", sans-serif';
   ctx.fillText('V1ST NUTRITION - VELANJA RD, SURAT, GUJARAT', 1250, 805);
   ctx.font = '600 15px "JetBrains Mono", monospace';
   ctx.fillText('BATCH: V1ST-2026-WH01  |  MFG: 01/2026  EXP: 07/2027', 1250, 835);
@@ -189,14 +189,145 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
-  texture.flipY = false;
+  // CRITICAL FIX: flipY must be TRUE so canvas row 0 (top) maps to cylinder UV top (v=1)
+  texture.flipY = true;
   return texture;
+}
+
+// 3-4 Floating Minimalist 3D Accents
+function FloatingAccents({ flavorColor }) {
+  const capRef = useRef();
+  const crystalRef = useRef();
+  const ringRef = useRef();
+  const shardRef = useRef();
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    const px = state.pointer.x;
+    const py = state.pointer.y;
+
+    // Accent 1: Peptide Capsule
+    if (capRef.current) {
+      capRef.current.position.y = 1.0 + Math.sin(t * 1.8) * 0.12 + py * 0.2;
+      capRef.current.position.x = -2.2 + px * 0.15;
+      capRef.current.rotation.x = t * 0.6 + py * 0.5;
+      capRef.current.rotation.y = t * 0.8 + px * 0.5;
+    }
+
+    // Accent 2: Faceted Hex Crystal
+    if (crystalRef.current) {
+      crystalRef.current.position.y = 0.95 + Math.cos(t * 1.5) * 0.1 + py * 0.2;
+      crystalRef.current.position.x = 2.15 + px * 0.15;
+      crystalRef.current.rotation.y = t * 0.9;
+      crystalRef.current.rotation.z = Math.sin(t * 0.8) * 0.3;
+    }
+
+    // Accent 3: Orbital Titanium Precision Ring
+    if (ringRef.current) {
+      ringRef.current.position.y = -1.05 + Math.sin(t * 1.3) * 0.08 - py * 0.15;
+      ringRef.current.position.x = 2.0 + px * 0.2;
+      ringRef.current.rotation.x = 0.8 + t * 0.4;
+      ringRef.current.rotation.y = t * 0.5;
+    }
+
+    // Accent 4: Micro Molecular Shard
+    if (shardRef.current) {
+      shardRef.current.position.y = -0.9 + Math.cos(t * 1.7) * 0.1 - py * 0.15;
+      shardRef.current.position.x = -2.05 + px * 0.2;
+      shardRef.current.rotation.x = t * 0.7;
+      shardRef.current.rotation.y = t * 0.6;
+    }
+  });
+
+  return (
+    <group>
+      {/* 1. Floating Kinetic Peptide Capsule */}
+      <group ref={capRef} position={[-2.2, 1.0, 0.4]} scale={[0.22, 0.22, 0.22]}>
+        {/* Top Half - Flavor Colored Metal */}
+        <mesh position={[0, 0.5, 0]}>
+          <cylinderGeometry args={[0.42, 0.42, 1.0, 32]} />
+          <meshPhysicalMaterial
+            color={flavorColor}
+            metalness={0.88}
+            roughness={0.18}
+            clearcoat={0.6}
+            clearcoatRoughness={0.1}
+          />
+        </mesh>
+        <mesh position={[0, 1.0, 0]}>
+          <sphereGeometry args={[0.42, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <meshPhysicalMaterial
+            color={flavorColor}
+            metalness={0.88}
+            roughness={0.18}
+            clearcoat={0.6}
+          />
+        </mesh>
+        {/* Bottom Half - Dark Titanium Chrome */}
+        <mesh position={[0, -0.5, 0]}>
+          <cylinderGeometry args={[0.42, 0.42, 1.0, 32]} />
+          <meshPhysicalMaterial
+            color="#141418"
+            metalness={0.95}
+            roughness={0.15}
+            clearcoat={0.8}
+          />
+        </mesh>
+        <mesh position={[0, -1.0, 0]} rotation={[Math.PI, 0, 0]}>
+          <sphereGeometry args={[0.42, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <meshPhysicalMaterial
+            color="#141418"
+            metalness={0.95}
+            roughness={0.15}
+            clearcoat={0.8}
+          />
+        </mesh>
+      </group>
+
+      {/* 2. Faceted Octahedron Crystal */}
+      <mesh ref={crystalRef} position={[2.15, 0.95, -0.2]} scale={[0.32, 0.38, 0.32]}>
+        <octahedronGeometry args={[1, 0]} />
+        <meshPhysicalMaterial
+          color={flavorColor}
+          metalness={0.8}
+          roughness={0.12}
+          clearcoat={0.9}
+          clearcoatRoughness={0.05}
+          emissive={flavorColor}
+          emissiveIntensity={0.25}
+        />
+      </mesh>
+
+      {/* 3. Orbital Precision Torus Ring */}
+      <mesh ref={ringRef} position={[2.0, -1.05, 0.5]} scale={[0.45, 0.45, 0.45]}>
+        <torusGeometry args={[1.0, 0.08, 16, 48]} />
+        <meshPhysicalMaterial
+          color="#222228"
+          metalness={0.92}
+          roughness={0.2}
+          clearcoat={0.5}
+        />
+      </mesh>
+
+      {/* 4. Micro Molecular Icosahedron */}
+      <mesh ref={shardRef} position={[-2.05, -0.9, -0.3]} scale={[0.26, 0.26, 0.26]}>
+        <icosahedronGeometry args={[1, 0]} />
+        <meshPhysicalMaterial
+          color="#10B981"
+          metalness={0.85}
+          roughness={0.2}
+          clearcoat={0.7}
+          emissive="#10B981"
+          emissiveIntensity={0.2}
+        />
+      </mesh>
+    </group>
+  );
 }
 
 // 3D Supplement Container Mesh
 function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
   const groupRef = useRef();
-  const tubMeshRef = useRef();
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef({ x: 0, y: 0 });
   const rotationVelocity = useRef(0);
@@ -214,41 +345,46 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
     }
   }, [labelTexture, flavorColor, flavorName]);
 
-  // Materials
+  // Materials with high-end PBR properties
   const blackCarbonMaterial = useMemo(() => {
     return new THREE.MeshPhysicalMaterial({
-      color: '#141417',
-      roughness: 0.35,
-      metalness: 0.2,
+      color: '#121216',
+      roughness: 0.32,
+      metalness: 0.25,
       clearcoat: 0.45,
-      clearcoatRoughness: 0.15,
+      clearcoatRoughness: 0.18,
       reflectivity: 0.6,
     });
   }, []);
 
   const titaniumCapMaterial = useMemo(() => {
-    return new THREE.MeshStandardMaterial({
-      color: '#1E1E24',
-      metalness: 0.88,
-      roughness: 0.22,
+    return new THREE.MeshPhysicalMaterial({
+      color: '#17171C',
+      metalness: 0.94,
+      roughness: 0.16,
+      clearcoat: 0.4,
+      clearcoatRoughness: 0.12,
     });
   }, []);
 
   const accentRingMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: flavorColor,
-      metalness: 0.8,
-      roughness: 0.3,
+      metalness: 0.88,
+      roughness: 0.22,
       emissive: flavorColor,
-      emissiveIntensity: 0.25,
+      emissiveIntensity: 0.35,
     });
   }, [flavorColor]);
 
   const labelMaterial = useMemo(() => {
-    return new THREE.MeshStandardMaterial({
+    return new THREE.MeshPhysicalMaterial({
       map: labelTexture,
-      roughness: 0.28,
-      metalness: 0.15,
+      roughness: 0.22,
+      metalness: 0.12,
+      clearcoat: 0.55,
+      clearcoatRoughness: 0.1,
+      reflectivity: 0.55,
     });
   }, [labelTexture]);
 
@@ -261,7 +397,7 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
     groupRef.current.position.y = Math.sin(time * 1.6) * 0.08;
 
     // Mouse tilt parallax interpolation (simulating physical object weight)
-    const targetTiltX = -state.pointer.y * 0.28;
+    const targetTiltX = -state.pointer.y * 0.26;
     const targetTiltZ = -state.pointer.x * 0.18;
     groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetTiltX, 0.06);
     groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetTiltZ, 0.06);
@@ -358,7 +494,7 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
           return (
             <mesh key={i} position={[x, 0, z]} rotation={[0, -angle, 0]}>
               <boxGeometry args={[0.035, 0.26, 0.02]} />
-              <meshStandardMaterial color="#27272A" metalness={0.9} roughness={0.2} />
+              <meshPhysicalMaterial color="#1E1E24" metalness={0.96} roughness={0.14} clearcoat={0.4} />
             </mesh>
           );
         })}
@@ -402,35 +538,35 @@ export default function Hero3DSupplement({
   };
 
   return (
-    <div className="relative w-full h-[520px] lg:h-[620px] select-none rounded-3xl overflow-hidden glass-panel border border-white/10 shadow-2xl">
+    <div className="relative w-full h-[520px] lg:h-[630px] select-none rounded-3xl overflow-hidden glass-panel-elevated border border-white/10 shadow-elevated-glow">
       {/* Dynamic Ambient Background Glow matched with active flavor */}
       <div
-        className="absolute inset-0 pointer-events-none transition-all duration-700 opacity-25 blur-3xl"
+        className="absolute inset-0 pointer-events-none transition-all duration-700 opacity-30 blur-3xl"
         style={{
           background: `radial-gradient(circle at 50% 45%, ${activeFlavor.colorHex} 0%, #10B981 35%, transparent 70%)`,
         }}
       />
 
-      {/* Grid Canvas Overlay */}
-      <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
+      {/* Subtle Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-grid opacity-25 pointer-events-none" />
 
       {/* Floating 3D Badge Overlays */}
       <div className="absolute top-5 left-5 z-10 flex flex-wrap items-center gap-2">
-        <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono font-semibold rounded-full bg-zinc-900/80 border border-emerald-500/30 text-emerald-400 backdrop-blur-md">
+        <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono font-semibold rounded-full bg-zinc-900/85 border border-emerald-500/35 text-emerald-400 backdrop-blur-md shadow-sm">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
           KINETIC 3D LAB
         </span>
-        <span className="flex items-center gap-1 px-3 py-1 text-xs font-mono text-zinc-300 rounded-full bg-zinc-900/70 border border-white/10 backdrop-blur-md">
+        <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono text-zinc-300 rounded-full bg-zinc-900/75 border border-white/10 backdrop-blur-md shadow-sm">
           <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
           NABL LAB CERTIFIED
         </span>
       </div>
 
       {/* Viewport Control Buttons */}
-      <div className="absolute bottom-5 right-5 z-10 flex items-center gap-2 bg-zinc-900/80 p-1.5 rounded-2xl border border-white/10 backdrop-blur-lg">
+      <div className="absolute bottom-5 right-5 z-10 flex items-center gap-2 bg-zinc-900/85 p-1.5 rounded-2xl border border-white/10 backdrop-blur-lg shadow-lg">
         <button
           onClick={toggleNutritionView}
-          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-300 ${
             viewMode === 'nutrition'
               ? 'bg-emerald-500 text-black shadow-volt-glow'
               : 'text-zinc-300 hover:text-white hover:bg-zinc-800'
@@ -446,7 +582,7 @@ export default function Hero3DSupplement({
             setIsAutoRotate(!isAutoRotate);
             setTargetAngle(null);
           }}
-          className={`p-2 rounded-xl transition-all ${
+          className={`p-2 rounded-xl transition-all duration-300 ${
             isAutoRotate
               ? 'bg-zinc-800 text-emerald-400'
               : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
@@ -458,7 +594,7 @@ export default function Hero3DSupplement({
 
         <button
           onClick={handleReset}
-          className="px-2.5 py-1.5 text-xs text-zinc-400 hover:text-white rounded-xl hover:bg-zinc-800 transition"
+          className="px-2.5 py-1.5 text-xs text-zinc-400 hover:text-white rounded-xl hover:bg-zinc-800 transition duration-300"
           title="Reset View Orientation"
         >
           Reset
@@ -466,7 +602,7 @@ export default function Hero3DSupplement({
       </div>
 
       {/* Interaction Hint */}
-      <div className="absolute bottom-5 left-5 z-10 text-[11px] font-mono text-zinc-400 bg-black/40 px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm pointer-events-none hidden sm:block">
+      <div className="absolute bottom-5 left-5 z-10 text-[11px] font-mono text-zinc-400 bg-black/50 px-3.5 py-1 rounded-full border border-white/5 backdrop-blur-sm pointer-events-none hidden sm:block">
         ✦ Drag cursor to rotate 360° • Responsive studio lighting
       </div>
 
@@ -479,18 +615,24 @@ export default function Hero3DSupplement({
       >
         <PerspectiveCamera makeDefault position={[0, 0.4, 5.2]} fov={45} />
 
-        {/* Studio Lighting System */}
-        <ambientLight intensity={0.8} />
-        {/* Emerald Backlight Rim */}
-        <directionalLight position={[-4, 3, -3]} intensity={3.0} color="#10B981" />
-        {/* Warm Golden Key Light */}
-        <directionalLight position={[4, 4, 3]} intensity={2.2} color="#F59E0B" />
-        {/* Front White Fill Light */}
-        <directionalLight position={[0, 1, 4]} intensity={1.2} color="#FFFFFF" />
+        {/* Realistic PBR Studio Lighting System */}
+        <ambientLight intensity={0.7} color="#0E1311" />
+        
+        {/* Cool-White Studio Key Light */}
+        <directionalLight position={[3.8, 4.8, 4.0]} intensity={2.8} color="#F8FAFC" />
+
+        {/* Vibrant Emerald Rim Backlight */}
+        <directionalLight position={[-4.5, 3.5, -3.5]} intensity={4.2} color="#10B981" />
+
+        {/* Warm Golden Specular Rim / Fill */}
+        <directionalLight position={[4.2, -1.2, -3.2]} intensity={2.0} color="#F59E0B" />
+
+        {/* Top-Down Softbox */}
+        <directionalLight position={[0, 6.0, 0.5]} intensity={1.3} color="#E2E8F0" />
 
         {/* Suspended Protein & Energy Sparkles */}
-        <Sparkles count={45} scale={6} size={3} speed={0.4} color="#10B981" opacity={0.65} />
-        <Sparkles count={30} scale={5} size={2.5} speed={0.3} color="#F59E0B" opacity={0.5} />
+        <Sparkles count={45} scale={6.5} size={3} speed={0.4} color="#10B981" opacity={0.65} />
+        <Sparkles count={30} scale={5.5} size={2.5} speed={0.3} color="#F59E0B" opacity={0.5} />
 
         {/* Studio Reflections Environment */}
         <Environment preset="city" />
@@ -503,13 +645,16 @@ export default function Hero3DSupplement({
           targetAngle={targetAngle}
         />
 
+        {/* 3-4 Floating Minimalist 3D Accents */}
+        <FloatingAccents flavorColor={activeFlavor.colorHex} />
+
         {/* Soft Contact Shadow on Studio Floor */}
         <ContactShadows
           position={[0, -2.1, 0]}
-          opacity={0.75}
-          scale={7}
-          blur={2.4}
-          far={3.8}
+          opacity={0.82}
+          scale={8.5}
+          blur={2.6}
+          far={4.2}
           color="#000000"
         />
       </Canvas>
