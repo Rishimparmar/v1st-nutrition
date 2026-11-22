@@ -4,21 +4,21 @@ import { ContactShadows, Environment, Float, Sparkles, PerspectiveCamera } from 
 import * as THREE from 'three';
 import { RotateCw, ShieldCheck, Eye } from 'lucide-react';
 
-// Generates an ultra-crisp, high-resolution procedural label texture with perfect hemispheric symmetry
+// Generates an optimized, mobile/iOS WebGL-safe procedural label texture (1024x512)
 function createSupplementLabelTexture(flavorColor, flavorName) {
   const canvas = document.createElement('canvas');
-  canvas.width = 2048;
-  canvas.height = 1024;
+  canvas.width = 1024;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
   // Background deep dark carbon weave
   ctx.fillStyle = '#0C0C10';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Subtle grid lines & carbon pattern
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-  ctx.lineWidth = 2;
-  for (let x = 0; x < canvas.width; x += 32) {
+  // Subtle carbon grid lines
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+  ctx.lineWidth = 1.5;
+  for (let x = 0; x < canvas.width; x += 24) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, canvas.height);
@@ -26,149 +26,147 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   }
 
   // =========================================================================
-  // FRONT HEMISPHERE: u = 0.0 to 0.5 (x: 0 to 1024), EXACT CENTER at x = 512
+  // FRONT HEMISPHERE: u = 0.0 to 0.5 (x: 0 to 512), EXACT CENTER at x = 256
   // =========================================================================
-  const frontCenter = 512;
+  const frontCenter = 256;
 
   // Top accent bar
   ctx.fillStyle = flavorColor;
-  ctx.fillRect(frontCenter - 360, 95, 720, 14);
+  ctx.fillRect(frontCenter - 180, 48, 360, 7);
 
   // Geometric Brand Emblem
   ctx.save();
-  ctx.translate(frontCenter, 185);
+  ctx.translate(frontCenter, 92);
   ctx.fillStyle = flavorColor;
   ctx.beginPath();
-  ctx.moveTo(0, -38);
-  ctx.lineTo(34, 22);
-  ctx.lineTo(-34, 22);
+  ctx.moveTo(0, -19);
+  ctx.lineTo(17, 11);
+  ctx.lineTo(-17, 11);
   ctx.closePath();
   ctx.fill();
   ctx.fillStyle = '#0C0C10';
-  ctx.font = 'bold 28px "Syne", sans-serif';
+  ctx.font = 'bold 14px "Syne", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('V1', 0, 16);
+  ctx.fillText('V1', 0, 8);
   ctx.restore();
 
-  // Brand Name (Centered at 512)
+  // Brand Name (Centered at 256)
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '900 52px "Syne", sans-serif';
+  ctx.font = '900 26px "Syne", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('V1ST NUTRITION', frontCenter, 275);
+  ctx.fillText('V1ST NUTRITION', frontCenter, 138);
 
-  // Product Tier Subtitle (Centered at 512)
+  // Product Tier Subtitle (Centered at 256)
   ctx.fillStyle = flavorColor;
-  ctx.font = '700 20px "JetBrains Mono", monospace';
-  ctx.letterSpacing = '5px';
+  ctx.font = '700 10.5px "JetBrains Mono", monospace';
+  ctx.letterSpacing = '3px';
   ctx.textAlign = 'center';
-  ctx.fillText('SURAT FLAGSHIP • KINETIC LABS FORMULATION', frontCenter, 320);
+  ctx.fillText('SURAT FLAGSHIP • KINETIC LABS FORMULATION', frontCenter, 160);
 
-  // Main Product Title (Centered at 512)
+  // Main Product Title (Centered at 256)
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '900 86px "Syne", sans-serif';
+  ctx.font = '900 43px "Syne", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('100% WHEY', frontCenter, 425);
+  ctx.fillText('100% WHEY', frontCenter, 212);
   ctx.fillStyle = flavorColor;
-  ctx.fillText('ISOLATE', frontCenter, 510);
+  ctx.fillText('ISOLATE', frontCenter, 255);
 
-  // Highlight Badge: Microfiltered Purity (Centered at 512)
+  // Highlight Badge: Microfiltered Purity (Centered at 256)
   ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
-  ctx.fillRect(frontCenter - 380, 545, 760, 48);
+  ctx.fillRect(frontCenter - 190, 272, 380, 24);
   ctx.fillStyle = '#E4E4E7';
-  ctx.font = '600 21px "Plus Jakarta Sans", sans-serif';
+  ctx.font = '600 10.5px "Plus Jakarta Sans", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('CROSS-FLOW MICROFILTERED • ZERO ADDED SUGAR', frontCenter, 577);
+  ctx.fillText('CROSS-FLOW MICROFILTERED • ZERO ADDED SUGAR', frontCenter, 288);
 
-  // Macro Pillars 4-Box Grid (Centered at 512, total width: 700px)
+  // Macro Pillars 4-Box Grid (Centered at 256, total width: 350px)
   const macros = [
     { val: '27G', lbl: 'PROTEIN' },
     { val: '5.9G', lbl: 'BCAA' },
     { val: '11.8G', lbl: 'EAA' },
     { val: '0G', lbl: 'SUGAR' },
   ];
-  const boxWidth = 160;
-  const boxGap = 16;
+  const boxWidth = 80;
+  const boxGap = 8;
   const startX = frontCenter - (4 * boxWidth + 3 * boxGap) / 2;
 
   macros.forEach((m, idx) => {
     const bx = startX + idx * (boxWidth + boxGap);
     ctx.fillStyle = 'rgba(20, 20, 26, 0.9)';
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-    ctx.lineWidth = 2.5;
-    ctx.strokeRect(bx, 625, boxWidth, 125);
-    ctx.fillRect(bx, 625, boxWidth, 125);
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(bx, 312, boxWidth, 62);
+    ctx.fillRect(bx, 312, boxWidth, 62);
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '900 40px "Syne", sans-serif';
+    ctx.font = '900 20px "Syne", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(m.val, bx + boxWidth / 2, 680);
+    ctx.fillText(m.val, bx + boxWidth / 2, 340);
 
     ctx.fillStyle = flavorColor;
-    ctx.font = '700 17px "JetBrains Mono", monospace';
-    ctx.fillText(m.lbl, bx + boxWidth / 2, 720);
+    ctx.font = '700 8.5px "JetBrains Mono", monospace';
+    ctx.fillText(m.lbl, bx + boxWidth / 2, 360);
   });
 
-  // Selected Flavor Stripe Indicator (Centered at 512)
+  // Selected Flavor Stripe Indicator (Centered at 256)
   ctx.fillStyle = flavorColor;
-  ctx.fillRect(frontCenter - 350, 775, 700, 68);
+  ctx.fillRect(frontCenter - 175, 388, 350, 34);
   ctx.fillStyle = '#09090B';
-  ctx.font = '900 28px "Syne", sans-serif';
+  ctx.font = '900 14px "Syne", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(`FLAVOR: ${flavorName.toUpperCase()}`, frontCenter, 818);
+  ctx.fillText(`FLAVOR: ${flavorName.toUpperCase()}`, frontCenter, 410);
 
   // Authenticity Seal Badge (Top right of front face)
   ctx.save();
-  ctx.translate(frontCenter + 330, 200);
+  ctx.translate(frontCenter + 165, 100);
   ctx.beginPath();
-  ctx.arc(0, 0, 56, 0, Math.PI * 2);
+  ctx.arc(0, 0, 28, 0, Math.PI * 2);
   ctx.strokeStyle = '#F59E0B';
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 2.5;
   ctx.stroke();
   ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
   ctx.fill();
 
   ctx.fillStyle = '#F59E0B';
-  ctx.font = '800 13px "Plus Jakarta Sans", sans-serif';
+  ctx.font = '800 6.5px "Plus Jakarta Sans", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('100% GENUINE', 0, -16);
-  ctx.font = '900 20px "Syne", sans-serif';
-  ctx.fillText('NABL', 0, 8);
-  ctx.font = '700 12px "JetBrains Mono", monospace';
-  ctx.fillText('CERTIFIED', 0, 28);
+  ctx.fillText('100% GENUINE', 0, -8);
+  ctx.font = '900 10px "Syne", sans-serif';
+  ctx.fillText('NABL', 0, 4);
+  ctx.font = '700 6px "JetBrains Mono", monospace';
+  ctx.fillText('CERTIFIED', 0, 14);
   ctx.restore();
 
   // =========================================================================
-  // BACK HEMISPHERE: u = 0.5 to 1.0 (x: 1024 to 2048), EXACT CENTER at x = 1536
+  // BACK HEMISPHERE: u = 0.5 to 1.0 (x: 512 to 1024), EXACT CENTER at x = 768
   // =========================================================================
-  const backCenter = 1536;
-  const factWidth = 680;
+  const backCenter = 768;
+  const factWidth = 340;
   const factX = backCenter - factWidth / 2;
 
   ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(factX, 95, factWidth, 800);
+  ctx.fillRect(factX, 48, factWidth, 400);
 
   // Nutrition Header
   ctx.fillStyle = '#000000';
-  ctx.font = '900 40px "Syne", sans-serif';
+  ctx.font = '900 20px "Syne", sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('NUTRITION FACTS', factX + 30, 155);
+  ctx.fillText('NUTRITION FACTS', factX + 15, 78);
 
-  ctx.font = '600 18px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Serving Size: 1 Heaping Scoop (31g) | Servings: 32', factX + 30, 190);
-  ctx.fillRect(factX + 30, 205, factWidth - 60, 7);
+  ctx.font = '600 9px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('Serving Size: 1 Scoop (31g) | Servings: 32', factX + 15, 95);
+  ctx.fillRect(factX + 15, 103, factWidth - 30, 3.5);
 
-  ctx.font = '900 26px "Syne", sans-serif';
-  ctx.fillText('Amount Per Serving', factX + 30, 245);
-  ctx.fillText('Calories: 121 kcal', factX + 30, 280);
-  ctx.fillRect(factX + 30, 295, factWidth - 60, 3.5);
+  ctx.font = '900 13px "Syne", sans-serif';
+  ctx.fillText('Amount Per Serving', factX + 15, 122);
+  ctx.fillText('Calories: 121 kcal', factX + 15, 140);
+  ctx.fillRect(factX + 15, 148, factWidth - 30, 2);
 
   const facts = [
     { name: 'Total Protein (Pure Isolate)', val: '27.0 g', dv: '54%' },
     { name: 'Total Carbohydrates', val: '1.2 g', dv: '< 1%' },
-    { name: '  Dietary Fiber', val: '0.0 g', dv: '0%' },
     { name: '  Added Sugars', val: '0.0 g', dv: '0%' },
     { name: 'Total Fat', val: '0.4 g', dv: '< 1%' },
-    { name: '  Saturated Fat', val: '0.2 g', dv: '1%' },
     { name: 'Sodium', val: '115 mg', dv: '5%' },
     { name: 'Branched Chain Aminos (BCAA)', val: '5.9 g', dv: '—' },
     { name: 'Essential Amino Acids (EAA)', val: '11.8 g', dv: '—' },
@@ -176,37 +174,40 @@ function createSupplementLabelTexture(flavorColor, flavorName) {
   ];
 
   facts.forEach((item, i) => {
-    const yPos = 330 + i * 34;
-    ctx.font = i === 0 ? '800 18px "Plus Jakarta Sans", sans-serif' : '500 16px "Plus Jakarta Sans", sans-serif';
+    const yPos = 165 + i * 17;
+    ctx.font = i === 0 ? '800 9px "Plus Jakarta Sans", sans-serif' : '500 8px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#111827';
-    ctx.fillText(item.name, factX + 30, yPos);
+    ctx.fillText(item.name, factX + 15, yPos);
     ctx.textAlign = 'right';
-    ctx.fillText(`${item.val}  (${item.dv})`, factX + factWidth - 30, yPos);
+    ctx.fillText(`${item.val} (${item.dv})`, factX + factWidth - 15, yPos);
     ctx.textAlign = 'left';
     ctx.fillStyle = '#E5E7EB';
-    ctx.fillRect(factX + 30, yPos + 6, factWidth - 60, 1);
+    ctx.fillRect(factX + 15, yPos + 3, factWidth - 30, 0.7);
   });
 
   // FSSAI & Store details
   ctx.fillStyle = '#111827';
-  ctx.font = '700 16px "JetBrains Mono", monospace';
-  ctx.fillText('FSSAI LIC NO: 10723026000412', factX + 30, 710);
-  ctx.font = '500 15px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Manufactured for & Distributed by:', factX + 30, 736);
-  ctx.font = '700 15px "Syne", sans-serif';
-  ctx.fillText('V1ST NUTRITION - VELANJA RD, SURAT, GUJARAT', factX + 30, 760);
-  ctx.font = '600 14px "JetBrains Mono", monospace';
-  ctx.fillText('BATCH: V1ST-2026-WH01  |  MFG: 01/2026  EXP: 07/2027', factX + 30, 786);
+  ctx.font = '700 8px "JetBrains Mono", monospace';
+  ctx.fillText('FSSAI LIC NO: 10723026000412', factX + 15, 355);
+  ctx.font = '500 7.5px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('Manufactured for & Distributed by:', factX + 15, 368);
+  ctx.font = '700 7.5px "Syne", sans-serif';
+  ctx.fillText('V1ST NUTRITION - VELANJA RD, SURAT', factX + 15, 380);
+  ctx.font = '600 7px "JetBrains Mono", monospace';
+  ctx.fillText('BATCH: V1ST-2026-WH01 | EXP: 07/2027', factX + 15, 393);
 
   // Barcode mock stripes
-  for (let b = factX + 30; b < factX + factWidth - 30; b += Math.floor(Math.random() * 8) + 4) {
-    ctx.fillRect(b, 808, Math.random() > 0.5 ? 4 : 2, 32);
+  for (let b = factX + 15; b < factX + factWidth - 15; b += Math.floor(Math.random() * 5) + 3) {
+    ctx.fillRect(b, 404, Math.random() > 0.5 ? 2 : 1, 16);
   }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
   texture.flipY = true;
+  texture.generateMipmaps = false;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
   return texture;
 }
 
@@ -256,7 +257,7 @@ function FloatingAccents({ flavorColor }) {
       {/* 1. Kinetic Peptide Capsule */}
       <group ref={capRef} position={[-2.1, 1.05, 0.4]} scale={[0.2, 0.2, 0.2]}>
         <mesh position={[0, 0.5, 0]}>
-          <cylinderGeometry args={[0.42, 0.42, 1.0, 32]} />
+          <cylinderGeometry args={[0.42, 0.42, 1.0, 24]} />
           <meshPhysicalMaterial
             color={flavorColor}
             metalness={0.88}
@@ -265,7 +266,7 @@ function FloatingAccents({ flavorColor }) {
           />
         </mesh>
         <mesh position={[0, 1.0, 0]}>
-          <sphereGeometry args={[0.42, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <sphereGeometry args={[0.42, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
           <meshPhysicalMaterial
             color={flavorColor}
             metalness={0.88}
@@ -274,7 +275,7 @@ function FloatingAccents({ flavorColor }) {
           />
         </mesh>
         <mesh position={[0, -0.5, 0]}>
-          <cylinderGeometry args={[0.42, 0.42, 1.0, 32]} />
+          <cylinderGeometry args={[0.42, 0.42, 1.0, 24]} />
           <meshPhysicalMaterial
             color="#141418"
             metalness={0.95}
@@ -283,7 +284,7 @@ function FloatingAccents({ flavorColor }) {
           />
         </mesh>
         <mesh position={[0, -1.0, 0]} rotation={[Math.PI, 0, 0]}>
-          <sphereGeometry args={[0.42, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <sphereGeometry args={[0.42, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
           <meshPhysicalMaterial
             color="#141418"
             metalness={0.95}
@@ -308,7 +309,7 @@ function FloatingAccents({ flavorColor }) {
 
       {/* 3. Orbital Precision Torus Ring */}
       <mesh ref={ringRef} position={[1.95, -1.05, 0.5]} scale={[0.4, 0.4, 0.4]}>
-        <torusGeometry args={[1.0, 0.08, 16, 48]} />
+        <torusGeometry args={[1.0, 0.08, 12, 36]} />
         <meshPhysicalMaterial
           color="#222228"
           metalness={0.92}
@@ -346,12 +347,14 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
     return createSupplementLabelTexture(flavorColor, flavorName);
   }, [flavorColor, flavorName]);
 
-  // Update label texture on flavor change
+  // CRITICAL MEMORY CLEANUP: dispose previous texture on unmount or flavor change to prevent iOS WebKit leaks
   useEffect(() => {
-    if (labelTexture) {
-      labelTexture.needsUpdate = true;
-    }
-  }, [labelTexture, flavorColor, flavorName]);
+    return () => {
+      if (labelTexture) {
+        labelTexture.dispose();
+      }
+    };
+  }, [labelTexture]);
 
   // Materials with high-end PBR properties
   const blackCarbonMaterial = useMemo(() => {
@@ -427,9 +430,9 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
     }
   });
 
-  // Pointer Drag Handlers
+  // Safe pointer handlers that do not swallow iOS vertical scrolling
   const handlePointerDown = (e) => {
-    e.stopPropagation();
+    // Only capture primary pointer
     setIsDragging(true);
     dragStart.current = { x: e.clientX, rotY: userRotationY.current };
     rotationVelocity.current = 0;
@@ -459,46 +462,46 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
     >
       {/* 1. Main Tub Base Chamber */}
       <mesh position={[0, -0.2, 0]} material={blackCarbonMaterial}>
-        <cylinderGeometry args={[1.35, 1.28, 2.5, 64]} />
+        <cylinderGeometry args={[1.35, 1.28, 2.5, 48]} />
       </mesh>
 
       {/* 2. Procedural Dynamic Label Sleeve: thetaStart: Math.PI / 2 centers the front label (u=0.25) facing camera! */}
       <mesh position={[0, -0.22, 0]} material={labelMaterial}>
-        <cylinderGeometry args={[1.356, 1.306, 2.05, 64, 1, true, Math.PI / 2, Math.PI * 2]} />
+        <cylinderGeometry args={[1.356, 1.306, 2.05, 48, 1, true, Math.PI / 2, Math.PI * 2]} />
       </mesh>
 
       {/* 3. Tub Top Shoulder Slope */}
       <mesh position={[0, 1.15, 0]} material={blackCarbonMaterial}>
-        <cylinderGeometry args={[1.05, 1.35, 0.25, 64]} />
+        <cylinderGeometry args={[1.05, 1.35, 0.25, 48]} />
       </mesh>
 
       {/* 4. Metallic Flavor Accent Band Ring */}
       <mesh position={[0, 1.29, 0]} material={accentRingMaterial}>
-        <cylinderGeometry args={[1.06, 1.06, 0.04, 64]} />
+        <cylinderGeometry args={[1.06, 1.06, 0.04, 48]} />
       </mesh>
 
       {/* 5. Screw Thread Collar */}
       <mesh position={[0, 1.36, 0]} material={blackCarbonMaterial}>
-        <cylinderGeometry args={[0.98, 0.98, 0.12, 64]} />
+        <cylinderGeometry args={[0.98, 0.98, 0.12, 48]} />
       </mesh>
 
       {/* 6. Heavy Titanium Screw-Cap Lid with Beveled Grip */}
       <group position={[0, 1.55, 0]}>
         <mesh material={titaniumCapMaterial}>
-          <cylinderGeometry args={[1.12, 1.12, 0.28, 64]} />
+          <cylinderGeometry args={[1.12, 1.12, 0.28, 48]} />
         </mesh>
         <mesh position={[0, 0.16, 0]} material={titaniumCapMaterial}>
-          <cylinderGeometry args={[1.02, 1.12, 0.05, 64]} />
+          <cylinderGeometry args={[1.02, 1.12, 0.05, 48]} />
         </mesh>
 
         {/* Ribbed Vertical Grip Ridges around Lid rim */}
-        {Array.from({ length: 48 }).map((_, i) => {
-          const angle = (i / 48) * Math.PI * 2;
+        {Array.from({ length: 36 }).map((_, i) => {
+          const angle = (i / 36) * Math.PI * 2;
           const x = Math.cos(angle) * 1.125;
           const z = Math.sin(angle) * 1.125;
           return (
             <mesh key={i} position={[x, 0, z]} rotation={[0, -angle, 0]}>
-              <boxGeometry args={[0.035, 0.26, 0.02]} />
+              <boxGeometry args={[0.038, 0.26, 0.02]} />
               <meshPhysicalMaterial color="#1E1E24" metalness={0.96} roughness={0.14} clearcoat={0.4} />
             </mesh>
           );
@@ -507,13 +510,13 @@ function SupplementTub({ flavorColor, flavorName, isAutoRotate, targetAngle }) {
 
       {/* 7. Bottom Rim Ring */}
       <mesh position={[0, -1.48, 0]} material={blackCarbonMaterial}>
-        <cylinderGeometry args={[1.28, 1.22, 0.08, 64]} />
+        <cylinderGeometry args={[1.28, 1.22, 0.08, 48]} />
       </mesh>
     </group>
   );
 }
 
-// Full 3D Hero Showcase Viewport
+// Full 3D Hero Showcase Viewport with iOS Safari & Mobile WebGL Safety
 export default function Hero3DSupplement({
   activeFlavor = { name: 'Double Rich Chocolate', colorHex: '#5C3317' },
   onFlavorSelect,
@@ -542,7 +545,10 @@ export default function Hero3DSupplement({
   };
 
   return (
-    <div className="relative w-full h-[480px] lg:h-[580px] select-none rounded-3xl overflow-hidden glass-panel-elevated border border-white/10 shadow-elevated-glow">
+    <div
+      className="relative w-full h-[460px] sm:h-[480px] lg:h-[580px] select-none rounded-3xl overflow-hidden glass-panel-elevated border border-white/10 shadow-elevated-glow"
+      style={{ touchAction: 'pan-y' }}
+    >
       {/* Dynamic Ambient Background Glow matched with active flavor */}
       <div
         className="absolute inset-0 pointer-events-none transition-all duration-700 opacity-25 blur-3xl"
@@ -555,7 +561,7 @@ export default function Hero3DSupplement({
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
 
       {/* Floating 3D Badge Overlays */}
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2">
+      <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-none">
         <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono font-semibold rounded-full bg-zinc-900/85 border border-emerald-500/35 text-emerald-400 backdrop-blur-md shadow-sm">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
           KINETIC 3D LAB
@@ -610,12 +616,18 @@ export default function Hero3DSupplement({
         ✦ Drag cursor to rotate 360°
       </div>
 
-      {/* 3D React Three Fiber Canvas with Perfect Viewport Framing */}
+      {/* 3D React Three Fiber Canvas with iOS Safari DPR Capping [1, 1.5] and touch-action: pan-y */}
       <Canvas
         shadows
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[1, 1.5]}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+          preserveDrawingBuffer: false,
+        }}
         className="cursor-grab active:cursor-grabbing w-full h-full"
+        style={{ touchAction: 'pan-y' }}
       >
         <PerspectiveCamera makeDefault position={[0, 0.1, 5.8]} fov={38} />
 
@@ -627,8 +639,8 @@ export default function Hero3DSupplement({
         <directionalLight position={[0, 6.0, 0.5]} intensity={1.3} color="#E2E8F0" />
 
         {/* Suspended Protein & Energy Sparkles */}
-        <Sparkles count={40} scale={6.0} size={2.8} speed={0.4} color="#10B981" opacity={0.6} />
-        <Sparkles count={25} scale={5.0} size={2.2} speed={0.3} color="#F59E0B" opacity={0.45} />
+        <Sparkles count={35} scale={6.0} size={2.6} speed={0.35} color="#10B981" opacity={0.6} />
+        <Sparkles count={20} scale={5.0} size={2.0} speed={0.25} color="#F59E0B" opacity={0.45} />
 
         {/* Studio Reflections Environment */}
         <Environment preset="city" />
